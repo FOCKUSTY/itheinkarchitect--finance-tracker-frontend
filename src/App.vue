@@ -1,11 +1,34 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { RouterLink, RouterView } from "vue-router";
+</script>
 
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div id="app">
+    <nav>
+      <RouterLink to="/transactions">Транзакции</RouterLink>
+      <RouterLink to="/incomes">Доходы</RouterLink>
+    </nav>
+    <main>
+      <RouterView />
+    </main>
+  </div>
 </template>
 
-<style scoped></style>
+<style>
+#app {
+  font-family: Arial, sans-serif;
+  padding: 1rem;
+}
+nav {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+nav a {
+  text-decoration: none;
+  color: blue;
+}
+nav a.router-link-active {
+  font-weight: bold;
+}
+</style>
