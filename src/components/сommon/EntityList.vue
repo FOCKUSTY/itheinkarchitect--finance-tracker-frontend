@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
 const props = defineProps<{
-  title: string
+  title: string;
   store: {
-    list: any[]
-    loading: boolean
-    error: string | null
-    fetchAll: () => Promise<void>
-    remove: (id: number) => Promise<void>
-  }
-  createRoute: string
-  editRoutePrefix: string
-  dateKey: string
-  itemLabel: string
-}>()
+    list: any[];
+    loading: boolean;
+    error: string | null;
+    fetchAll: () => Promise<void>;
+    remove: (id: number) => Promise<void>;
+  };
+  createRoute: string;
+  editRoutePrefix: string;
+  dateKey: string;
+  itemLabel: string;
+}>();
 
-const router = useRouter()
-const filterCategory = ref('')
+const router = useRouter();
+const filterCategory = ref("");
 
 const filteredList = computed(() => {
   if (!filterCategory.value) {
@@ -26,25 +26,25 @@ const filteredList = computed(() => {
   }
 
   return props.store.list.filter((item) =>
-    item.category.toLowerCase().includes(filterCategory.value.toLowerCase())
-  )
-})
+    item.category.toLowerCase().includes(filterCategory.value.toLowerCase()),
+  );
+});
 
-onMounted(() => props.store.fetchAll())
+onMounted(() => props.store.fetchAll());
 
 const handleDelete = async (id: number) => {
   if (confirm(`Удалить ${props.itemLabel}?`)) {
-    await props.store.remove(id)
+    await props.store.remove(id);
   }
-}
+};
 
 const goToEdit = (id: number) => {
-  router.push(`${props.editRoutePrefix}${id}/edit`)
-}
+  router.push(`${props.editRoutePrefix}${id}/edit`);
+};
 
 const goToCreate = () => {
-  router.push(props.createRoute)
-}
+  router.push(props.createRoute);
+};
 </script>
 
 <template>
@@ -65,12 +65,7 @@ const goToCreate = () => {
       <input
         v-model="filterCategory"
         placeholder="Фильтр по категории"
-        class="
-          border border-(--fg-mini-text-30)
-          bg-(--bg-smooth) text-(--fg-default)
-          w-full max-w-sm py-2 px-3 rounded outline-none transition-colors
-          focus:border-(--fg-mini-text)
-        "
+        class="border border-(--fg-mini-text-30) bg-(--bg-smooth) text-(--fg-default) w-full max-w-sm py-2 px-3 rounded outline-none transition-colors focus:border-(--fg-mini-text)"
       />
     </div>
 
@@ -80,12 +75,13 @@ const goToCreate = () => {
     </div>
 
     <div v-else class="overflow-x-auto">
-      <table class="bg-(--fg-smooth) border border-(--fg-mini-text-30) w-full border-collapse">
+      <table
+        class="bg-(--fg-smooth) border border-(--fg-mini-text-30) w-full border-collapse"
+      >
         <thead>
-          <tr class="
-            bg-(--bg-smooth-light)
-            [&>th]:py-2 [&>th]:px-4 [&>th]:text-left [&>th]:border-b [&>th]:bg-(--fg-mini-text-30) [&>th]:text-(--fg-default)
-          ">
+          <tr
+            class="bg-(--bg-smooth-light) [&>th]:py-2 [&>th]:px-4 [&>th]:text-left [&>th]:border-b [&>th]:bg-(--fg-mini-text-30) [&>th]:text-(--fg-default)"
+          >
             <th>ID</th>
             <th>Сумма</th>
             <th>Категория</th>
@@ -98,10 +94,7 @@ const goToCreate = () => {
           <tr
             v-for="item in filteredList"
             :key="item.id"
-            class="
-              bg-(--bg-component) hover:bg-opacity-20 transition-colors
-              [&>td]:py-2 [&>td]:px-4 [&>td]:border-b [&>td]:bg-(--fg-mini-text-30) [&>td]:text-(--fg-text)
-            "
+            class="bg-(--bg-component) hover:bg-opacity-20 transition-colors [&>td]:py-2 [&>td]:px-4 [&>td]:border-b [&>td]:bg-(--fg-mini-text-30) [&>td]:text-(--fg-text)"
           >
             <td>{{ item.id }}</td>
             <td>{{ item.amount }}</td>
