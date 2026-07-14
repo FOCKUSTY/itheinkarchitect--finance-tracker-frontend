@@ -1,2 +1,1 @@
-export * from "./incomes";
-export * from "./transactions";
+export * from "./сommon";

@@ -1,7 +1,17 @@
 <script setup lang="ts">
-import { TransactionList } from "@/components";
+import { EntityList } from "@/components";
+import { useTransactionsStore } from "@/stores/transactions";
+
+const store = useTransactionsStore();
 </script>
 
 <template>
-  <TransactionList />
+  <EntityList
+    title="Транзакции"
+    :store="store"
+    create-route="/transactions/create"
+    edit-route-prefix="/transactions/"
+    date-key="transaction_date"
+    item-label="Транзакцию"
+  />
 </template>

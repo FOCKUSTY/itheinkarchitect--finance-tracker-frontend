@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { IncomeUpdate } from "@/types";
 
-import { IncomeForm } from "@/components";
+import { EntityForm } from "@/components";
 import { useIncomesStore } from "@/stores";
 
 import { useRoute, useRouter } from "vue-router";
@@ -11,24 +11,19 @@ const route = useRoute();
 const router = useRouter();
 const store = useIncomesStore();
 const initialData = ref<IncomeUpdate | null>(null);
-
 const id = Number(route.params.id);
 
 onMounted(async () => {
-  try {
-    const item = store.list.find((t) => t.id === id);
-    if (item) {
-      initialData.value = {
-        amount: item.amount,
-        category: item.category,
-        description: item.description,
-        income_date: item.income_date,
-      };
-    } else {
-      // Если нет в сторе, можно запросить отдельно, пока редирект
-      router.push("/incomes");
-    }
-  } catch {
+  const item = store.list.find((income) => income.id === id);
+
+  if (item) {
+    initialData.value = {
+      amount: item.amount,
+      category: item.category,
+      description: item.description,
+      income_date: item.income_date,
+    };
+  } else {
     router.push("/incomes");
   }
 });
@@ -38,16 +33,15 @@ const handleSubmit = async (data: IncomeUpdate) => {
   router.push("/incomes");
 };
 
-const handleCancel = () => {
-  router.push("/incomes");
-};
+const handleCancel = () => router.push("/incomes");
 </script>
 
 <template>
-  <h2>Редактировать доход</h2>
-  <IncomeForm
+  <h2 class="text-2xl font-bold mb-4">Редактировать доход</h2>
+  <EntityForm
     v-if="initialData"
     :initial-data="initialData"
+    date-key="income_date"
     @submit="handleSubmit"
     @cancel="handleCancel"
   />

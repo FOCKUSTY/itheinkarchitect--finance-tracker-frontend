@@ -1,34 +1,29 @@
 <script setup lang="ts">
+import "./main.css";
+
 import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <template>
-  <div id="app">
-    <nav>
-      <RouterLink to="/transactions">Транзакции</RouterLink>
-      <RouterLink to="/incomes">Доходы</RouterLink>
+  <div class="min-h-screen bg-gray-100 p-4">
+    <nav class="flex gap-4 mb-4 bg-white p-4 rounded shadow">
+      <RouterLink
+        to="/transactions"
+        class="text-blue-600 hover:text-blue-800 font-medium"
+        active-class="font-bold"
+      >
+        Транзакции
+      </RouterLink>
+      <RouterLink
+        to="/incomes"
+        class="text-blue-600 hover:text-blue-800 font-medium"
+        active-class="font-bold"
+      >
+        Доходы
+      </RouterLink>
     </nav>
-    <main>
+    <main class="bg-white p-6 rounded shadow">
       <RouterView />
     </main>
   </div>
 </template>
-
-<style>
-#app {
-  font-family: Arial, sans-serif;
-  padding: 1rem;
-}
-nav {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-nav a {
-  text-decoration: none;
-  color: blue;
-}
-nav a.router-link-active {
-  font-weight: bold;
-}
-</style>

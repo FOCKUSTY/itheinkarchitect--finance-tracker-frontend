@@ -2,99 +2,19 @@ import type {
   Transaction,
   TransactionCreate,
   TransactionUpdate,
-} from "@/types/models";
+} from "@/types";
 
-import { transactionsApi } from "@/api/transactions";
+import { useEntityCrud } from "@/composables";
+import { transactionsApi } from "@/api";
 import { defineStore } from "pinia";
-import { ref } from "vue";
 
 export const useTransactionsStore = defineStore("transactions", () => {
-  const list = ref<Transaction[]>([]);
-  const loading = ref(false);
-  const error = ref<string | null>(null);
-
-  const fetchAll = async () => {
-    loading.value = true;
-    error.value = null;
-    
-    try {
-      list.value = await transactionsApi.getAll();
-    } catch (err) {
-      error.value =
-        err instanceof Error ? err.message : "Ошибка загрузки транзакций";
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const fetchByCategory = async (category: string) => {
-    loading.value = true;
-    error.value = null;
-    try {
-      list.value = await transactionsApi.getByCategory(category);
-    } catch (err) {
-      error.value =
-        err instanceof Error ? err.message : "Ошибка загрузки по категории";
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const create = async (data: TransactionCreate) => {
-    loading.value = true;
-    error.value = null;
-    try {
-      await transactionsApi.create(data);
-      await fetchAll();
-    } catch (err) {
-      error.value =
-        err instanceof Error ? err.message : "Ошибка создания транзакции";
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const update = async (id: number, data: TransactionUpdate) => {
-    loading.value = true;
-    error.value = null;
-    try {
-      await transactionsApi.update(id, data);
-      await fetchAll();
-    } catch (err) {
-      error.value =
-        err instanceof Error ? err.message : "Ошибка обновления транзакции";
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  const remove = async (id: number) => {
-    loading.value = true;
-    error.value = null;
-    try {
-      await transactionsApi.delete(id);
-      await fetchAll();
-    } catch (err) {
-      error.value =
-        err instanceof Error ? err.message : "Ошибка удаления транзакции";
-      throw err;
-    } finally {
-      loading.value = false;
-    }
-  };
-
-  return {
-    list,
-    loading,
-    error,
-    fetchAll,
-    fetchByCategory,
-    create,
-    update,
-    remove,
-  };
+  const entity = useEntityCrud<
+    Transaction,
+    TransactionCreate,
+    TransactionUpdate
+  >({
+    api: transactionsApi,
+  });
+  return entity;
 });
